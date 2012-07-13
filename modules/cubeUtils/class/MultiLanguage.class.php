@@ -128,7 +128,7 @@ if (!class_exists('CubeUtil_MultiLanguage')) {
                     }
                 }
             }
-            return false;
+            return $language;
         }
 
         // ob filter
