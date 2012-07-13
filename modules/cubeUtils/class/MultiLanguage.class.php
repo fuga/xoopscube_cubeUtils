@@ -60,10 +60,13 @@ if (!class_exists('CubeUtil_MultiLanguage')) {
         function getLanguageName(&$language)
         {
             // check the current language
+            $setCookie = false;
             if(!empty($_GET[CUBE_UTILS_ML_PARAM_NAME]) && in_array($_GET[CUBE_UTILS_ML_PARAM_NAME], $this->mLanguages)) {
                 $this->mLanguage = $_GET[CUBE_UTILS_ML_PARAM_NAME] ;
+                $setCookie = true;
             } else if(!empty($_COOKIE[CUBE_UTILS_ML_PARAM_NAME]) && in_array($_COOKIE[CUBE_UTILS_ML_PARAM_NAME], $this->mLanguages)) {
                 $this->mLanguage = $_COOKIE[CUBE_UTILS_ML_PARAM_NAME];
+                $setCookie = true;
             } else if ($browserAccept = $this->getLangBrowserAccept()){
                 $this->mLanguage = $this->getLangBrowserAccept();
             } else {
@@ -71,8 +74,10 @@ if (!class_exists('CubeUtil_MultiLanguage')) {
             }
             
             if (!empty($this->mLanguage)) {
-                $_COOKIE[CUBE_UTILS_ML_PARAM_NAME] = $this->mLanguage;
-                setcookie(CUBE_UTILS_ML_PARAM_NAME, $this->mLanguage, time()+CUBE_UTILS_ML_COOKIELIFETIME, $this->mCookiePath, '', 0);
+                if ($setCookie) {
+                    $_COOKIE[CUBE_UTILS_ML_PARAM_NAME] = $this->mLanguage;
+                    setcookie(CUBE_UTILS_ML_PARAM_NAME, $this->mLanguage, time()+CUBE_UTILS_ML_COOKIELIFETIME, $this->mCookiePath, '', 0);
+                }
                 $languageName = $this->getLangName($this->mLanguage);
                 if ($languageName) {
                     $language = $languageName;
